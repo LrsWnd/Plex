@@ -7,22 +7,18 @@ headers = {
     "X-Plex-Token": token
 }
 
-# movies = plex.library.section('Filme')
-# number = 0
-# for video in movies.search(unwatched=True):
-#     print(video.title)
-#     number += 1
-# print("Number of unwatched movies:", number)
+# update Movie Library
+movies = plex.library.section(movies)
+movies.update()
 
-# Make a GET request to the Recording Priority endpoint
-# response = requests.get(baseurl + "/media/subscriptions", headers=headers)
+# update TV Show Library
+tvshows = plex.library.section(shows)
+tvshows.update()
 
-# response = requests.post(baseurl + "/livetv/dvrs/" + dvrid + "/reloadGuide", headers=headers)
+# reload Guide
+requests.post(baseurl + "/livetv/dvrs/" + dvrid + "/reloadGuide", headers=headers)
 
-# Print the response from the API
-# print(response.content)
+# Reload DVR
+reload = requests.get(baseurl + "/livetv/sessions", headers=headers)
+print(reload.content)
 
-response2 = requests.get(baseurl + "/livetv/sessions", headers=headers)
-print(response2.content)
-
-# curl -X POST "https:/" + baseurl + "/livetv/dvrs/<dvrID>/reloadGuide?X-Plex-Token=<api token>"
