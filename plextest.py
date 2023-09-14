@@ -8,17 +8,34 @@ headers = {
 }
 
 # update Movie Library
-movies = plex.library.section(movies)
-movies.update()
+def addmovies():
+    movies = plex.library.section(movielibrary)
+    movies.update()
 
 # update TV Show Library
-tvshows = plex.library.section(shows)
-tvshows.update()
+def addshows():
+    tvshows = plex.library.section(showlibrary)
+    tvshows.update()
 
 # reload Guide
-requests.post(baseurl + "/livetv/dvrs/" + dvrid + "/reloadGuide", headers=headers)
+def reloadguide():
+    requests.post(baseurl + "/livetv/dvrs/" + dvrid + "/reloadGuide", headers=headers)
 
 # Reload DVR
-reload = requests.get(baseurl + "/livetv/sessions", headers=headers)
-print(reload.content)
+# reload = requests.get(baseurl + "/livetv/sessions", headers=headers)
+# print(reload.content)
 
+# show 5 latest movies
+def lastmovies():
+    movies = plex.library.section(movielibrary)
+    movielist = movies.recentlyAdded()
+    movielist = movielist[:5]
+    for movie in movielist:
+        print(movie.title)
+
+
+def main():
+    lastmovies()
+
+if __name__ == "__main__":
+    main()
