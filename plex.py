@@ -21,10 +21,6 @@ def addshows():
 def reloadguide():
     requests.post(baseurl + "/livetv/dvrs/" + dvrid + "/reloadGuide", headers=headers)
 
-# Reload DVR
-# reload = requests.get(baseurl + "/livetv/sessions", headers=headers)
-# print(reload.content)
-
 # show 5 latest movies
 def lastmovies():
     movies = plex.library.section(movielibrary)
@@ -32,10 +28,3 @@ def lastmovies():
     movielist = movielist[:5]
     for movie in movielist:
         print(movie.title)
-
-
-def main():
-    lastmovies()
-
-if __name__ == "__main__":
-    main()
