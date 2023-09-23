@@ -28,3 +28,9 @@ def lastmovies():
     movielist = movielist[:5]
     for movie in movielist:
         print(movie.title)
+
+def isWatching():
+    if plex.clients():
+        return True
+    else:
+        return False

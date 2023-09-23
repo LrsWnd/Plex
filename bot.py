@@ -14,25 +14,32 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
+bot = commands.Bot(command_prefix="/", intents=intents,
+                   case_insensitive=False,)
+
 @tree.command(name = "hello", description = "My first application Command",) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def first_command(interaction):
+    await tree.sync()
+    # await bot.tree.sync()
     await interaction.response.send_message("Hello!")
 
 @tree.command(name = "relaodmovies", description = "Scan library for new movies",) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def first_command(interaction):
     if isServeronline():
         addmovies()
+        await interaction.response.send_message("New Movies will be available soon")
     else:
         await interaction.response.send_message(serverOfflineMessage)
     
-@tree.command(name = "relaodseries", description = "Scan library for new show",) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+@tree.command(name = "relaodshows", description = "Scan library for new shows",) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def first_command(interaction):
     if isServeronline():
         addshows()
+        await interaction.response.send_message("New Shows will be available soon")
     else:
         await interaction.response.send_message(serverOfflineMessage)
 
-@tree.command(name = "reloadguide", description = "Reload the live tv Guide",) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+@tree.command(name = "reloadguide", description = "Reload the live tv Guide") #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def first_command(interaction):
     if isServeronline():
         reloadguide()
@@ -40,17 +47,18 @@ async def first_command(interaction):
     else:
         await interaction.response.send_message(serverOfflineMessage)
 
+@tree.command(name = "issomeonewatching", description = "Check if someone is watching")
+async def first_command(interaction):
+    if isWatching():
+        await interaction.response.send_message("Somebody is watching")
+    else:
+        await interaction.response.send_message("Nobody is watching")
+
+
 @client.event
 async def on_ready():
     await tree.sync()
     print("Ready!")
-
-def test():
-    if isServeronline():
-        addmovies()
-        print("Added Movies")
-    else:
-        print(serverOfflineMessage)
 
 def isServeronline():
     import requests
@@ -60,8 +68,6 @@ def isServeronline():
     else:
         return False
 
-
-# client.run(TOKEN)
+client.run(TOKEN)
 # client.run()
 
-print(isServeronline())
