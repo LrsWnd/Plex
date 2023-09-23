@@ -55,8 +55,13 @@ def test():
 def isServeronline():
     import requests
     page = requests.get(serverURL)
-    return True
+    if page.status_code == 200:
+        return True
+    else:
+        return False
 
 
 # client.run(TOKEN)
 # client.run()
+
+print(isServeronline())
